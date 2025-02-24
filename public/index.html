@@ -13,6 +13,17 @@
             <form id="loginForm">
                 <input type="email" id="email" placeholder="Email" required>
                 <input type="password" id="password" placeholder="Password" required>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="showPassword">
+                    <label for="showPassword">Show password</label>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="rememberMe">
+                    <label for="rememberMe">Remember Me</label>
+                </div>
+
                 <button type="submit">Sign In</button>
                 <p class="forgot-password">
                     <a href="#" id="forgotPasswordLink">Forgot Your Password?</a>
@@ -27,14 +38,14 @@
         </div>
     </div>
 
+    
+
     <script>
-        // Forgot Password Click Event
         document.getElementById("forgotPasswordLink").addEventListener("click", function(event) {
             event.preventDefault();
             alert("Account Retrieval is still a work in progress.");
         });
 
-        // Login Form Submission
         document.getElementById("loginForm").addEventListener("submit", async function(event) {
             event.preventDefault();
 
@@ -64,6 +75,39 @@
                 alert("Something went wrong. Check console.");
             }
         });
+
+        document.getElementById("showPassword").addEventListener("change", function () {
+            const passwordField = document.getElementById("password");
+            passwordField.type = this.checked ? "text" : "password";
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const emailInput = document.getElementById("email");
+            const rememberMeCheckbox = document.getElementById("rememberMe");
+
+            if (localStorage.getItem("rememberMe") === "true") {
+                emailInput.value = localStorage.getItem("savedEmail") || "";
+                rememberMeCheckbox.checked = true;
+            }
+
+            document.getElementById("loginForm").addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                const email = emailInput.value;
+                const password = document.getElementById("password").value;
+
+                if (rememberMeCheckbox.checked) {
+                    localStorage.setItem("rememberMe", "true");
+                    localStorage.setItem("savedEmail", email);
+                } else {
+                    localStorage.removeItem("rememberMe");
+                    localStorage.removeItem("savedEmail");
+                }
+
+                // Proceed with login fetch request...
+            });
+        });
+
     </script>
 
 </body>

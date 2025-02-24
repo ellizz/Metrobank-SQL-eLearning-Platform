@@ -48,7 +48,33 @@ body {
     background: #f8f8f8;
 }
 
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Aligns left */
+    width: 100%;
+    margin: 6px 0;
+    font-size: 13px;
+    color: #333;
+    margin-top: -5px;
+    margin-bottom: -10px;
+}
+
+.checkbox-group input {
+    margin-right: 8px;
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+}
+
+.checkbox-group label {
+    cursor: pointer;
+}
+
+
+
 .login-box button {
+    margin-top: 20px;
     width: 100%;
     padding: 12px;
     background: blue;
