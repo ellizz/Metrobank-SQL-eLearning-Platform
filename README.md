@@ -2,8 +2,8 @@
 
 Welcome to the **Metrobank SQL eLearning Platform**! 🚀  
 Thesis Title: Optimizing Training Accessibility:Developing an AI driven Microsoft SQL eLearning Authoring Platform to Reduce Operational Cost
-A Thesis Proposal Presented to the Faculty of the Information and Communications Technology Program STI College Sta. Mesa 
 
+A Thesis Proposal Presented to the Faculty of the Information and Communications Technology Program STI College Sta. Mesa 
 In Partial Fulfilment 
 of the Requirements for the Degree 
 Bachelor of Science in Computer Science
