@@ -10,9 +10,9 @@
     <div class="container">
         <div class="login-box">
             <h2>Sign In</h2>
-            <form>
-                <input type="email" placeholder="Email" required>
-                <input type="password" placeholder="Password" required>
+            <form id="loginForm">
+                <input type="email" id="email" placeholder="Email" required>  <!-- Changed from Username to Email -->
+                <input type="password" id="password" placeholder="Password" required>
                 <button type="submit">Sign In</button>
                 <p class="forgot-password">Forgot Your Password?</p>
             </form>
@@ -24,5 +24,39 @@
             <a href="signup.html"><button class="signup-btn">Sign Up</button></a>
         </div>
     </div>
+
+    <!-- JavaScript for login functionality -->
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", async function(event) {
+            event.preventDefault(); // Prevent form from refreshing the page
+
+            const email = document.getElementById("email").value;  // Changed from username to email
+            const password = document.getElementById("password").value;
+
+            try {
+                const response = await fetch("http://localhost:3000/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ email, password })  // Changed from username to email
+                });
+
+                const data = await response.json();
+                console.log("Server Response:", data); // Debugging: Log response
+
+                if (response.ok) {
+                    alert("Login successful! Redirecting...");
+                    window.location.href = "dashboard.html"; // Redirect to dashboard
+                } else {
+                    alert("Login failed: " + data.message);
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Something went wrong. Check console.");
+            }
+        });
+    </script>
+
 </body>
 </html>

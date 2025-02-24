@@ -1,15 +1,17 @@
 require("dotenv").config();
 const express = require("express");
-const mysql = require("mysql");
-const bcrypt = require("bcryptjs"); // Import bcrypt for password hashing
-const util = require("util"); // Import util for promisifying db queries
+const mysql = require("mysql2"); // Using mysql2
+const bcrypt = require("bcryptjs");
+const util = require("util");
+const cors = require("cors"); // Enable CORS
 
-const db = require("./db"); // Import the database connection
-const query = util.promisify(db.query).bind(db); // Convert db.query() to a Promise
+const db = require("./db");
+const query = util.promisify(db.query).bind(db);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use(cors()); // Enable CORS
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -17,35 +19,31 @@ app.get("/", (req, res) => {
 });
 
 app.post("/login", async (req, res) => {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
 
-    if (!username || !password) {
-        return res.status(400).json({ message: "Username and password are required." });
+    if (!email || !password) {
+        return res.status(400).json({ message: "Email and password are required." });
     }
 
     try {
         // Check if the user exists in the database
-        const results = await query("SELECT * FROM users WHERE username = ?", [username]);
+        const results = await query("SELECT * FROM users WHERE email = ?", [email]);
 
         if (results.length === 0) {
-            return res.status(401).json({ message: "Invalid username or password." });
+            return res.status(401).json({ message: "Invalid email or password." });
         }
 
         const user = results[0];
-
-        // Debugging logs (check what values are returned)
-        console.log("Login Attempt:", username, password);
-        console.log("Database Record:", user);
 
         // Compare the provided password with the stored hash
         const isMatch = await bcrypt.compare(password, user.password_hash);
 
         if (!isMatch) {
-            return res.status(401).json({ message: "Invalid username or password." });
+            return res.status(401).json({ message: "Invalid email or password." });
         }
 
-        res.json({ message: "Login successful!" });
-
+        // Send a success response with the redirect URL
+        res.json({ message: "Login successful!", redirect: "/dashboard.html" });
     } catch (error) {
         console.error("Login error:", error);
         res.status(500).json({ message: "Server error", error });
