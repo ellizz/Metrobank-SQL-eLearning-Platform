@@ -14,7 +14,9 @@
                 <input type="email" id="email" placeholder="Email" required>
                 <input type="password" id="password" placeholder="Password" required>
                 <button type="submit">Sign In</button>
-                <p class="forgot-password">Forgot Your Password?</p>
+                <p class="forgot-password">
+                    <a href="#" id="forgotPasswordLink">Forgot Your Password?</a>
+                </p>
             </form>
         </div>
         <div class="info-box">
@@ -26,6 +28,13 @@
     </div>
 
     <script>
+        // Forgot Password Click Event
+        document.getElementById("forgotPasswordLink").addEventListener("click", function(event) {
+            event.preventDefault();
+            alert("Account Retrieval is still a work in progress.");
+        });
+
+        // Login Form Submission
         document.getElementById("loginForm").addEventListener("submit", async function(event) {
             event.preventDefault();
 
