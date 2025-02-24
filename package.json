@@ -18,9 +18,11 @@
   "homepage": "https://github.com/ellizz/Metrobank-SQL-eLearning-Platform#readme",
   "description": "",
   "dependencies": {
+    "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "mysql2": "^3.12.0"
   }
 }
