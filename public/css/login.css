@@ -23,6 +23,10 @@ body {
     overflow: hidden;
 }
 
+.signin-label {
+    margin-bottom: 20px;
+}
+
 .login-box {
     flex: 1;
     padding: 50px;
@@ -35,46 +39,55 @@ body {
 
 .login-box h2 {
     font-size: 26px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     align-self: flex-start;
 }
 
 .login-box input {
     width: 100%;
     padding: 14px;
-    margin: 12px 0;
     border: 1px solid #ccc;
     border-radius: 8px; 
     background: #f8f8f8;
+    margin-bottom: 10px;
+}
+
+
+.checkbox-container {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    gap: 50px;
+    margin-top: 10px;
+    margin-left: 5px;
 }
 
 .checkbox-group {
     display: flex;
     align-items: center;
-    justify-content: flex-start; 
-    width: 100%;
-    margin: 6px 0;
-    font-size: 13px;
+    font-size: 14px;
     color: #333;
-    margin-top: -5px;
-    margin-bottom: -10px;
 }
 
 .checkbox-group input {
-    margin-right: 8px;
-    cursor: pointer;
     width: 16px;
     height: 16px;
+    margin-right: 6px;
+    cursor: pointer;
+    accent-color: blue;
 }
 
 .checkbox-group label {
     cursor: pointer;
+    user-select: none;
+    line-height: 16px;
+    
+    margin-bottom: 10px;
 }
 
 
 
 .login-box button {
-    margin-top: 20px;
     width: 100%;
     padding: 12px;
     background: blue;
@@ -83,6 +96,7 @@ body {
     border-radius: 12px;
     cursor: pointer;
     font-size: 16px;
+    margin-top: 10px;
 }
 
 .login-box button:hover {
@@ -99,8 +113,8 @@ body {
 
 /*right side*/
 .logo {
-    width: 210px;
-    margin-top: -110px;
+    width: 200px;
+    margin-top: -50px;
     margin-bottom: 10px;
 }
 
