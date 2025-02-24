@@ -24,5 +24,42 @@
             <a href="index.html"><button class="signin-btn">Sign In</button></a>
         </div>
     </div>
+
+    <script>
+        document.querySelector("form").addEventListener("submit", async function(event) {
+            event.preventDefault();
+    
+            const email = document.querySelector("input[type='email']").value;
+            const password = document.querySelectorAll("input[type='password']")[0].value;
+            const confirmPassword = document.querySelectorAll("input[type='password']")[1].value;
+    
+            if (password !== confirmPassword) {
+                alert("Passwords do not match!");
+                return;
+            }
+    
+            try {
+                const response = await fetch("http://localhost:3000/signup", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email, password })
+                });
+    
+                const data = await response.json();
+                console.log("Server Response:", data);
+    
+                if (response.ok) {
+                    alert("Signup successful! Redirecting to login.");
+                    window.location.href = "index.html";
+                } else {
+                    alert("Signup failed: " + data.message);
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Something went wrong. Check console.");
+            }
+        });
+    </script>
+    
 </body>
 </html>

@@ -57,6 +57,34 @@ app.get("/users", async (req, res) => {
     }
 });
 
+app.post("/signup", async (req, res) => {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+        return res.status(400).json({ message: "Email and password are required." });
+    }
+
+    try {
+        const existingUser = await query("SELECT * FROM users WHERE email = ?", [email]);
+
+        if (existingUser.length > 0) {
+            return res.status(400).json({ message: "Email already registered." });
+        }
+
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        await query("INSERT INTO users (email, password_hash) VALUES (?, ?)", [email, hashedPassword]);
+
+        res.json({ message: "Signup successful! Redirecting to login." });
+    } catch (error) {
+        console.error("Signup error:", error);
+        res.status(500).json({ message: "Server error", error });
+    }
+});
+
+
+
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
