@@ -41,8 +41,9 @@
             event.preventDefault();
     
             const email = document.querySelector("input[type='email']").value;
-            const password = document.querySelectorAll("input[type='password']")[0].value;
-            const confirmPassword = document.querySelectorAll("input[type='password']")[1].value;
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirm-password").value;
+
     
             if (password !== confirmPassword) {
                 alert("Passwords do not match!");
@@ -83,6 +84,23 @@
                 confirmPassword.type = "password";
             }
         });
+
+        document.addEventListener("DOMContentLoaded", function() {
+            let password = document.getElementById("password");
+            let confirmPassword = document.getElementById("confirm-password");
+            let showPasswordCheckbox = document.getElementById("show-password");
+
+            if (password && confirmPassword && showPasswordCheckbox) {
+                showPasswordCheckbox.addEventListener("change", function() {
+                    let type = this.checked ? "text" : "password";
+                    password.type = type;
+                    confirmPassword.type = type;
+                });
+            } else {
+                console.error("Error: Password fields or checkbox not found.");
+            }
+        });
+
 
     </script>
     
