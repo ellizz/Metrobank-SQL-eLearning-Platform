@@ -1,0 +1,120 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(to right, #f0f0f0, #dfe9f3);
+}
+
+.container {
+    display: flex;
+    width: 850px;
+    height: 450px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+.login-box {
+    flex: 1;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: white;
+}
+
+.login-box h2 {
+    font-size: 26px;
+    margin-bottom: 20px;
+    align-self: flex-start;
+}
+
+.login-box input {
+    width: 100%;
+    padding: 14px;
+    margin: 12px 0;
+    border: 1px solid #ccc;
+    border-radius: 8px; 
+    background: #f8f8f8;
+}
+
+.login-box button {
+    width: 100%;
+    padding: 12px;
+    background: blue;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.login-box button:hover {
+    background: #0052D4;
+    transition: 0.3s;
+}
+
+.forgot-password {
+    text-align: center;
+    margin-top: 15px;
+    color: gray;
+    font-size: 14px;
+}
+
+/*right side*/
+.logo {
+    width: 200px;
+    margin-top: -90px;
+    margin-bottom: -2px;
+}
+
+.info-box {
+    flex: 1;
+    padding: 50px;
+    background: linear-gradient(to right, #0052D4, #4364F7);
+    color: white;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.info-box h2 {
+    font-size: 29px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.info-box p {
+    font-size: 15px;
+    max-width: 300px;
+    margin-bottom: 10px;
+}
+
+.signup-btn {
+    margin-top: 20px;
+    padding: 12px 24px;
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.signup-btn:hover {
+    background: white;
+    color: #0052D4;
+    transition: 0.3s;
+}
