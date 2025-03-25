@@ -12,6 +12,7 @@ body {
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: block; /* Ensure this is a block-level container */
 }
 
 header {
@@ -44,14 +45,27 @@ header {
 
 .table-controls {
     display: flex;
-    justify-content: space-between;
+    align-items: center; /* Align items vertically */
+    gap: 10px; /* Adds space between the label, dropdown, and input */
     margin: 10px 0;
+    justify-content: flex-start; /* Ensures content is aligned to the left */
+    width: 100%; /* Make sure it takes up full width */
 }
 
-.table-controls input {
-    padding: 5px 10px;
+.table-controls label {
+    margin-right: 10px; /* Adds space between the label and the dropdown */
+}
+
+#records-per-page {
+    padding: 5px;
+    font-size: 14px;
     border-radius: 5px;
     border: 1px solid #ccc;
+}
+
+input[type="text"] {
+    padding: 5px;
+    width: 200px;
 }
 
 table {
@@ -115,16 +129,6 @@ th {
 .records-per-page {
     display: flex;
     align-items: center;
-}
-
-.records-per-page button {
-    padding: 5px 10px;
-    margin-left: 5px;
-    font-size: 14px;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-.records-per-page button:hover {
-    background-color: #ddd;
+    gap: 10px; /* Adds spacing between dropdown and input */
+    width: 100%; /* Ensure full-width container */
 }

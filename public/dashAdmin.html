@@ -3,24 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/dashAdmin.css">
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body>
-
-    <div class="dashboard-container">
-        <!-- Header -->
-        <h1>Admin Dashboard</h1>
-        
-        <!-- Users Table Box -->
-        <div class="user-table-box">
-            <h2>Users Table</h2>
-
-            <!-- Add User Button -->
-            <button class="add-user-btn">+ Add User</button>
-
-            <!-- Users Table -->
-            <table id="user-table">
+    <div class="container">
+        <header>
+            <h1>Admin Dashboard</h1>
+        </header>
+        <section class="user-table">
+            <div class="table-header">
+                <h2>Users Table</h2>
+                <button class="add-user">+ Add User</button>
+            </div>
+            <div class="table-controls">
+                <label for="records-per-page">Records per page </label>
+                <select id="records-per-page">
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="30">30</option>
+                </select>
+                <input type="text" placeholder="Search...">
+            </div>            
+            <table>
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -32,38 +37,38 @@
                         <th>Actions</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="user-table-body">
                     <!-- User rows will go here -->
                 </tbody>
             </table>
-
-            <!-- Pagination -->
             <div class="pagination">
-                <div class="records-per-page">
-                    <span>Records per page: </span>
-                    <button class="records-btn">10</button>
-                    <button class="records-btn">20</button>
-                    <button class="records-btn">30</button>
-                </div>
-                <div class="pagination-info">
-                    <span>Showing 1 to 10 of 100 entries</span>
-                </div>
-                <div class="page-nav">
-                    <button class="prev-btn">Previous</button>
-                    <button class="next-btn">Next</button>
-                </div>
+                <button class="prev">← Previous</button>
+                <button class="next">Next →</button>
+                <p id="pagination-info">Showing 1 to 10 of 100 entries</p>
             </div>
-        </div>
-
+        </section>
     </div>
 
     <script>
+        let currentPage = 1;
+        let recordsPerPage = 10;
+
         // Fetch users from the backend
+    const fetchUsers = () => {
+        const tableBody = document.querySelector('#user-table-body');
+        
+        // Clear the table body to remove any old rows
+        tableBody.innerHTML = '';
+
         fetch('http://localhost:3000/users')
-            .then(response => response.json())
-            .then(users => {
-                const tableBody = document.querySelector('#user-table tbody');
-                users.forEach(user => {
+        .then(response => response.json()) // Convert response to JSON
+        .then(responseData => {
+            console.log(responseData); // Log the entire response object to the console
+
+            // Now, check the structure
+            if (Array.isArray(responseData)) {
+                // If it's an array, we can directly loop through it
+                responseData.forEach(user => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
                         <td>${user.name}</td>
@@ -73,15 +78,67 @@
                         <td>${user.role}</td>
                         <td>${user.user_id}</td>
                         <td>
-                            <button class="edit-btn">✎ Edit</button>
-                            <button class="delete-btn">🗑️ Delete</button>
+                            <button class="edit">✎</button>
+                            <button class="delete">🗑️</button>
                         </td>
                     `;
                     tableBody.appendChild(row);
                 });
-            })
-            .catch(err => console.error('Error fetching users:', err));
-    </script>
+            } else {
+                console.error("Data is not in the expected format");
+            }
+        })
+        .catch(err => console.error('Error fetching users:', err));
+    };
 
+
+
+        // Update pagination info and disable/enable buttons
+        const updatePagination = (totalRecords) => {
+            const totalPages = Math.ceil(totalRecords / recordsPerPage);
+            const paginationInfo = document.getElementById('pagination-info');
+            paginationInfo.innerText = `Showing ${(currentPage - 1) * recordsPerPage + 1} to ${Math.min(currentPage * recordsPerPage, totalRecords)} of ${totalRecords} entries`;
+
+            // Disable previous button if on the first page
+            document.querySelector('.prev').disabled = currentPage === 1;
+            // Disable next button if on the last page
+            document.querySelector('.next').disabled = currentPage === totalPages;
+        };
+
+        // Handle page change (next/previous)
+        document.querySelector('.prev').addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                fetchUsers();
+            }
+        });
+
+        document.querySelector('.next').addEventListener('click', () => {
+            currentPage++;
+            fetchUsers();
+        });
+
+        // Handle records per page change
+        document.querySelector('#records-per-page').addEventListener('change', (e) => {
+            recordsPerPage = parseInt(e.target.value);  // Get value from dropdown
+            currentPage = 1; // Reset to first page when records per page is changed
+            fetchUsers();    // Fetch users with the new setting
+        });
+
+        // Function to edit user (open edit modal or page)
+        const editUser = (userId) => {
+            console.log(`Edit user with ID: ${userId}`);
+            // Implement the edit functionality (e.g., open modal with user details)
+        };
+
+        // Function to delete user
+        const deleteUser = (userId) => {
+            console.log(`Delete user with ID: ${userId}`);
+            // Implement the delete functionality (e.g., send delete request to backend)
+        };
+
+        // Initial data fetch
+        fetchUsers();
+    </script>
 </body>
 </html>
