@@ -1,9 +1,14 @@
 const bcrypt = require("bcryptjs");
 
-const passwords = ["hamilton"];
+// Admin password
+const password = "iamadmin";  // Replace with the desired admin password
 const saltRounds = 10;
 
-passwords.forEach(async (password) => {
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-    console.log(`Original: ${password} -> Hashed: ${hashedPassword}`);
+// Hashing the admin password
+bcrypt.hash(password, saltRounds, (err, hashedPassword) => {
+    if (err) {
+        console.error("Error hashing password:", err);
+    } else {
+        console.log(`Original: ${password} -> Hashed: ${hashedPassword}`);
+    }
 });

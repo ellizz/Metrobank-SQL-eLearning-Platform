@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <h1>Admin Dashboard</h1>
+
+    <table id="user-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Date Added</th>
+                <th>Role</th>
+                <th>User ID</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- User rows will go here -->
+        </tbody>
+    </table>
+
+    <script>
+        // Fetch users from the backend
+        fetch('/users')
+            .then(response => response.json())
+            .then(users => {
+                const tableBody = document.querySelector('#user-table tbody');
+                users.forEach(user => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${user.name}</td>
+                        <td>${user.email}</td>
+                        <td>${new Date(user.created_at).toLocaleDateString()}</td>
+                        <td>${user.role}</td>
+                        <td>${user.user_id}</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            })
+            .catch(err => console.error('Error fetching users:', err));
+    </script>
+</body>
+</html>

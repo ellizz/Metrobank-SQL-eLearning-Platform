@@ -49,13 +49,13 @@
             event.preventDefault();
             alert("Account Retrieval is still a work in progress.");
         });
-
+    
         document.getElementById("loginForm").addEventListener("submit", async function(event) {
             event.preventDefault();
-
+    
             const email = document.getElementById("email").value; 
             const password = document.getElementById("password").value;
-
+    
             try {
                 const response = await fetch("http://localhost:3000/login", {
                     method: "POST",
@@ -64,13 +64,26 @@
                     },
                     body: JSON.stringify({ email, password })
                 });
-
+    
                 const data = await response.json();
                 console.log("Server Response:", data);
-
+    
                 if (response.ok) {
                     alert("Login successful! Redirecting...");
-                    window.location.href = "dashboard.html";
+    
+                    // Redirect based on user role
+                    switch (data.role) {
+                        case "admin":
+                            window.location.href = "dashAdmin.html";
+                            break;
+                        case "lecturer":
+                            window.location.href = "dashLecturer.html";
+                            break;
+                        case "trainee":
+                        default:
+                            window.location.href = "dashTrainee.html";
+                            break;
+                    }
                 } else {
                     alert("Login failed: " + data.message);
                 }
@@ -79,27 +92,27 @@
                 alert("Something went wrong. Check console.");
             }
         });
-
+    
         document.getElementById("showPassword").addEventListener("change", function () {
             const passwordField = document.getElementById("password");
             passwordField.type = this.checked ? "text" : "password";
         });
-
+    
         document.addEventListener("DOMContentLoaded", function () {
             const emailInput = document.getElementById("email");
             const rememberMeCheckbox = document.getElementById("rememberMe");
-
+    
             if (localStorage.getItem("rememberMe") === "true") {
                 emailInput.value = localStorage.getItem("savedEmail") || "";
                 rememberMeCheckbox.checked = true;
             }
-
+    
             document.getElementById("loginForm").addEventListener("submit", function (event) {
                 event.preventDefault();
-
+    
                 const email = emailInput.value;
                 const password = document.getElementById("password").value;
-
+    
                 if (rememberMeCheckbox.checked) {
                     localStorage.setItem("rememberMe", "true");
                     localStorage.setItem("savedEmail", email);
@@ -107,12 +120,11 @@
                     localStorage.removeItem("rememberMe");
                     localStorage.removeItem("savedEmail");
                 }
-
-                // Proceed with login fetch request...
             });
         });
-
+    
     </script>
+    
 
 </body>
 </html>

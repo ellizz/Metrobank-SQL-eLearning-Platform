@@ -40,22 +40,29 @@ app.post("/login", async (req, res) => {
             return res.status(401).json({ message: "Invalid email or password." });
         }
 
-        res.json({ message: "Login successful!", redirect: "/dashboard.html" });
+        // ✅ Send role information to the frontend
+        res.json({
+            message: "Login successful!",
+            role: user.role  // This allows the frontend to redirect correctly
+        });
+
     } catch (error) {
         console.error("Login error:", error);
         res.status(500).json({ message: "Server error", error });
     }
 });
 
+
 app.get("/users", async (req, res) => {
     try {
-        const results = await query("SELECT * FROM users");
+        const results = await query("SELECT name, email, created_at, role, user_id FROM users");
         res.json(results);
     } catch (err) {
         console.error("Error fetching users:", err);
         res.status(500).json({ error: "Database error" });
     }
 });
+
 
 app.post("/signup", async (req, res) => {
     const { email, password } = req.body;
@@ -74,7 +81,29 @@ app.post("/signup", async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        await query("INSERT INTO users (email, password_hash) VALUES (?, ?)", [email, hashedPassword]);
+        // ✅ Generate a unique 7-character user ID
+        const generateUserId = () => {
+            const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+            let userId = "";
+            for (let i = 0; i < 7; i++) {
+                userId += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return userId;
+        };
+
+        let newUserId;
+        let isUnique = false;
+        while (!isUnique) {
+            newUserId = generateUserId();
+            const checkId = await query("SELECT * FROM users WHERE user_id = ?", [newUserId]);
+            if (checkId.length === 0) {
+                isUnique = true;
+            }
+        }
+
+        // ✅ Insert new user with `user_id`
+        await query("INSERT INTO users (user_id, email, password_hash) VALUES (?, ?, ?)", 
+                    [newUserId, email, hashedPassword]);
 
         res.json({ message: "Signup successful! Redirecting to login." });
     } catch (error) {
@@ -82,6 +111,9 @@ app.post("/signup", async (req, res) => {
         res.status(500).json({ message: "Server error", error });
     }
 });
+
+
+
 
 
 
