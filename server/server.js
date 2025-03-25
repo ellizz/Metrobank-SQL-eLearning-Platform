@@ -13,8 +13,8 @@ const PORT = process.env.PORT || 3000;
 
 // CORS configuration
 const corsOptions = {
-    origin: 'http://localhost:8080',  // Make sure this is your frontend's URL
-    methods: ['GET', 'POST'],        // Allowed methods (GET, POST)
+    origin: ['http://localhost:8080', 'http://127.0.0.1:8080', 'http://192.168.254.101:8080'],  // Add your frontend URLs here
+    methods: ['GET', 'POST'],        // Allowed methods
     allowedHeaders: ['Content-Type'], // Allowed headers
 };
 

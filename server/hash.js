@@ -1,7 +1,7 @@
 const bcrypt = require("bcryptjs");
 
 // Admin password
-const password = "iamadmin";  // Replace with the desired admin password
+const password = "testing";  // Replace with the desired admin password
 const saltRounds = 10;
 
 // Hashing the admin password

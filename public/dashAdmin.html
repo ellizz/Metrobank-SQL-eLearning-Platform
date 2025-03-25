@@ -10,6 +10,7 @@
     <div class="container">
         <header>
             <h1>Admin Dashboard</h1>
+            <button id="sign-out" class="sign-out-button">Sign Out</button>
         </header>
         <section class="user-table">
             <div class="table-header">
@@ -54,42 +55,42 @@
         let recordsPerPage = 10;
 
         // Fetch users from the backend
-    const fetchUsers = () => {
-        const tableBody = document.querySelector('#user-table-body');
-        
-        // Clear the table body to remove any old rows
-        tableBody.innerHTML = '';
+        const fetchUsers = () => {
+            const tableBody = document.querySelector('#user-table-body');
+            
+            // Clear the table body to remove any old rows
+            tableBody.innerHTML = '';
 
-        fetch('http://localhost:3000/users')
-        .then(response => response.json()) // Convert response to JSON
-        .then(responseData => {
-            console.log(responseData); // Log the entire response object to the console
+            fetch('http://localhost:3000/users')
+            .then(response => response.json()) // Convert response to JSON
+            .then(responseData => {
+                console.log(responseData); // Log the entire response object to the console
 
-            // Now, check the structure
-            if (Array.isArray(responseData)) {
-                // If it's an array, we can directly loop through it
-                responseData.forEach(user => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${user.name}</td>
-                        <td>${user.email}</td>
-                        <td>${new Date(user.created_at).toLocaleDateString()}</td>
-                        <td>${new Date(user.created_at).toLocaleTimeString()}</td>
-                        <td>${user.role}</td>
-                        <td>${user.user_id}</td>
-                        <td>
-                            <button class="edit">✎</button>
-                            <button class="delete">🗑️</button>
-                        </td>
-                    `;
-                    tableBody.appendChild(row);
-                });
-            } else {
-                console.error("Data is not in the expected format");
-            }
-        })
-        .catch(err => console.error('Error fetching users:', err));
-    };
+                // Now, check the structure
+                if (Array.isArray(responseData)) {
+                    // If it's an array, we can directly loop through it
+                    responseData.forEach(user => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${user.name}</td>
+                            <td>${user.email}</td>
+                            <td>${new Date(user.created_at).toLocaleDateString()}</td>
+                            <td>${new Date(user.created_at).toLocaleTimeString()}</td>
+                            <td>${user.role}</td>
+                            <td>${user.user_id}</td>
+                            <td>
+                                <button class="edit">✎</button>
+                                <button class="delete">🗑️</button>
+                            </td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                } else {
+                    console.error("Data is not in the expected format");
+                }
+            })
+            .catch(err => console.error('Error fetching users:', err));
+        };
 
 
 
@@ -136,6 +137,15 @@
             console.log(`Delete user with ID: ${userId}`);
             // Implement the delete functionality (e.g., send delete request to backend)
         };
+
+        // Sign out functionality
+        document.getElementById('sign-out').addEventListener('click', () => {
+            // Here, you can clear the authentication token or perform any necessary cleanup
+            localStorage.removeItem('authToken'); // Example if you're using localStorage to store token
+
+            // Redirect to login page
+            window.location.href = '/index';  // Change to your actual login URL
+        });
 
         // Initial data fetch
         fetchUsers();
