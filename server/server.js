@@ -11,7 +11,15 @@ const query = util.promisify(db.query).bind(db);
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-app.use(cors()); 
+// CORS configuration
+const corsOptions = {
+    origin: 'http://localhost:8080',  // Make sure this is your frontend's URL
+    methods: ['GET', 'POST'],        // Allowed methods (GET, POST)
+    allowedHeaders: ['Content-Type'], // Allowed headers
+};
+
+app.use(cors(corsOptions));  // Use the CORS options for requests
+
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -54,6 +62,7 @@ app.post("/login", async (req, res) => {
 
 
 app.get("/users", async (req, res) => {
+    console.log("Fetching users...");  // Log request to check if it's being hit
     try {
         const results = await query("SELECT name, email, created_at, role, user_id FROM users");
         res.json(results);
@@ -62,7 +71,6 @@ app.get("/users", async (req, res) => {
         res.status(500).json({ error: "Database error" });
     }
 });
-
 
 app.post("/signup", async (req, res) => {
     const { email, password } = req.body;

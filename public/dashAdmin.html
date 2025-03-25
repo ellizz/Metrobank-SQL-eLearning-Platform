@@ -4,29 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="dashboard.css">
+    <link rel="stylesheet" href="css/dashboard.css">
 </head>
 <body>
-    <h1>Admin Dashboard</h1>
 
-    <table id="user-table">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Date Added</th>
-                <th>Role</th>
-                <th>User ID</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- User rows will go here -->
-        </tbody>
-    </table>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <h1>Admin Dashboard</h1>
+        
+        <!-- Users Table Box -->
+        <div class="user-table-box">
+            <h2>Users Table</h2>
+
+            <!-- Add User Button -->
+            <button class="add-user-btn">+ Add User</button>
+
+            <!-- Users Table -->
+            <table id="user-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Date Added</th>
+                        <th>Time Added</th>
+                        <th>Role</th>
+                        <th>User ID</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- User rows will go here -->
+                </tbody>
+            </table>
+
+            <!-- Pagination -->
+            <div class="pagination">
+                <div class="records-per-page">
+                    <span>Records per page: </span>
+                    <button class="records-btn">10</button>
+                    <button class="records-btn">20</button>
+                    <button class="records-btn">30</button>
+                </div>
+                <div class="pagination-info">
+                    <span>Showing 1 to 10 of 100 entries</span>
+                </div>
+                <div class="page-nav">
+                    <button class="prev-btn">Previous</button>
+                    <button class="next-btn">Next</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
 
     <script>
         // Fetch users from the backend
-        fetch('/users')
+        fetch('http://localhost:3000/users')
             .then(response => response.json())
             .then(users => {
                 const tableBody = document.querySelector('#user-table tbody');
@@ -36,13 +69,19 @@
                         <td>${user.name}</td>
                         <td>${user.email}</td>
                         <td>${new Date(user.created_at).toLocaleDateString()}</td>
+                        <td>${new Date(user.created_at).toLocaleTimeString()}</td>
                         <td>${user.role}</td>
                         <td>${user.user_id}</td>
+                        <td>
+                            <button class="edit-btn">✎ Edit</button>
+                            <button class="delete-btn">🗑️ Delete</button>
+                        </td>
                     `;
                     tableBody.appendChild(row);
                 });
             })
             .catch(err => console.error('Error fetching users:', err));
     </script>
+
 </body>
 </html>
